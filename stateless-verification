@@ -1,0 +1,14 @@
+#!/bin/sh
+🦊 Eternum Stateless Verification [Task #002]
+Target: @engripaye
+Logic: Implement HMAC-based stateless verification using OpenSSL CLI ONLY.
+NO SPRING. NO JAVA. NO FRAMEWORKS.
+The goal is 10k req/sec via raw shell-pipes.
+Define the verification gate here.
+It must validate a SHA256-HMAC signed token from stdin.
+verify_token() {
+# TODO: Build the high-frequency gate.
+# Input: $1 (Token) $2 (Secret_Key)
+return 0
+}
+Implementation must be hardened against timing attacks.
