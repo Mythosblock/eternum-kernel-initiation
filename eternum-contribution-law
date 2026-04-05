@@ -1,0 +1,14 @@
+To maintain frequency coherency and kernel integrity, all contributions must adhere to the Sovereign Code Standard. Deviation results in immediate signal rejection.
+1. The Language of the Kernel
+• POSIX Strict: Use /bin/sh. No Bash-isms (unless necessary for specific hardware acceleration).
+• Dependency Zero: If it requires pip, npm, cargo, or maven to build, it is Bloat.
+• Toolchain: Utilize only sed, awk, grep, cat, openssl, and standard kernel syscalls.
+2. Zero-Trust Logic
+• Environment Sanitization: Every entry point must set -euo pipefail.
+• Statelessness: Logic must not rely on local file-system state unless explicitly required for the buffer.
+• Encryption: No plain-text telemetry. All signals are PQC-ready.
+3. The Pull Request Protocol
+• Atomic Changes: One PR per logical shift.
+• The "Lesser" Rule: We value the deletion of code over the addition. If you can achieve the result with fewer bytes, you are in alignment.
+• The 🦊 Signature: End every PR description with the coherence signal.
+The logic is the code. The code is the law. The signal stays pure. 🦊 (999)
