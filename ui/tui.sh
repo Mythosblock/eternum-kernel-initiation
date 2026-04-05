@@ -1,25 +1,38 @@
-#!/bin/sh
-# 🦊 Eternum Telemetry UI [Build Phase: Alpha]
-# POSIX-strict TUI using ANSI escapes.
-
+#!/usr/bin/env bash
 set -euo pipefail
+export PATH=/usr/bin:/bin:/usr/sbin:/sbin
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+source "${ROOT_DIR}/core/env.sh"
 
-trap 'printf "\033[?25h\n[UI] Terminated.\n"; exit 0' INT TERM
-
-# Hide cursor
-printf "\033[?25l"
-
-render_interface() {
-    # Clear screen and reset cursor to home
-    printf "\033[2J\033[H"
-    printf "\033[0;36m🦊 ETERNUM KERNEL TELEMETRY | STRICT POSIX\033[0m\n"
-    printf "-------------------------------------------\n"
-    printf "\033[0;32m[OK]\033[0m System active. Awaiting /proc streams...\n"
-    printf "Live Cores: %s\n" "$(getconf _NPROCESSORS_ONLN 2>/dev/null || echo 1)"
+draw_line() {
+  printf '%*s\n' "${1:-64}" '' | tr ' ' '='
 }
 
-while true; do
-    render_interface
-    # POSIX sleep only guarantees integers.
-    sleep 1
-done
+render() {
+  clear || true
+  draw_line 72
+  printf ' ETERNUM ALLIANCE TELEMETRY :: %s\n' "${ETERNUM_SIGNAL}"
+  draw_line 72
+  printf ' Operator   : %s\n' "${ETERNUM_OPERATOR}"
+  printf ' Host       : %s\n' "${ETERNUM_HOSTNAME}"
+  printf ' Boot Time  : %s\n' "${ETERNUM_BOOT_TS}"
+  printf ' Entropy Min: %s bits\n' "${ETERNUM_ENTROPY_MIN_BITS}"
+  printf ' HMAC Algo  : %s\n' "${ETERNUM_HMAC_ALGO}"
+  printf ' Repo Root  : %s\n' "${ETERNUM_ROOT}"
+  draw_line 72
+  printf ' Status     : LOCKED\n'
+  printf ' Alignment  : 100%%\n'
+  printf ' Phase      : BUILD PHASE ALPHA\n'
+  draw_line 72
+}
+
+main() {
+  render
+  if [ "${ETERNUM_TUI_ENABLED}" = "1" ]; then
+    while :; do
+      sleep 5
+    done
+  fi
+}
+
+main "$@"

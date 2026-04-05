@@ -1,27 +1,27 @@
-#!/bin/sh
-# 🦊 Eternum Shared Environment [Build Phase: Alpha]
-# Logic: Provide shared constants and telemetry formatting.
-
+#!/usr/bin/env bash
 set -euo pipefail
 
-# --- POSIX Visual Constants ---
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-CYAN='\033[0;36m'
-NC='\033[0m' # No Color
-BOLD='\033[1m'
+# Strict PATH lockdown to prevent TOCTOU hijacking
+export PATH=/usr/bin:/bin:/usr/sbin:/sbin
 
-# --- Operational Constants ---
-VERSION="1.0.0-alpha"
-SIGNAL_FREQ="999"
+export ETERNUM_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+export ETERNUM_SIGNAL="neuromycelial-pulse"
+export ETERNUM_OPERATOR="${USER:-unknown}"
+export ETERNUM_HOSTNAME="$(hostname -s 2>/dev/null || echo unknown-host)"
+export ETERNUM_OS="$(uname -s)"
+export ETERNUM_BOOT_TS="$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
 
-# --- Shared Telemetry Log ---
-log_info() { printf "${CYAN}[INFO]${NC} %s\n" "$1"; }
-log_ok() { printf "${GREEN}[OK]${NC} %s\n" "$1"; }
-log_crit() { printf "${RED}${BOLD}[CRIT]${NC} %s\n" "$1"; }
+export ETERNUM_ENTROPY_MIN_BITS="${ETERNUM_ENTROPY_MIN_BITS:-512}"
+export ETERNUM_HMAC_ALGO="${ETERNUM_HMAC_ALGO:-sha256}"
+export ETERNUM_TUI_ENABLED="${ETERNUM_TUI_ENABLED:-1}"
 
-# --- Entropy Check ---
-check_entropy() {
-    _avail=$(cat /proc/sys/kernel/random/entropy_avail 2>/dev/null || echo "N/A (Non-Linux)")
-    log_info "Current Entropy Density: $_avail"
-}
+export CYAN='\033[0;36m'
+export GREEN='\033[0;32m'
+export RED='\033[0;31m'
+export NC='\033[0m'
+
+eternum_log() { printf "${CYAN}[%s]${NC} %s\n" "$(date -u +"%Y-%m-%dT%H:%M:%SZ")" "$*"; }
+eternum_die() { printf "${RED}[FATAL]${NC} %s\n" "$*" >&2; exit 1; }
+eternum_require_cmd() { command -v "$1" >/dev/null 2>&1 || eternum_die "missing required command: $1"; }
+
+[[ "$ETERNUM_OS" == "Darwin" || "$ETERNUM_OS" == "Linux" ]] || eternum_die "Unsupported OS: $ETERNUM_OS. Alpha targets Darwin/Linux only."
