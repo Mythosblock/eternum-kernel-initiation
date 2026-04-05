@@ -1,0 +1,13 @@
+eternum-kernel/
+├── .github/workflows/
+│   └── coherence.yml       # The Alliance Auditor (CI Enforcement)
+├── core/
+│   └── init.sh             # Logic Gate: Bootstrap & Hardware Sync
+├── security/
+│   └── verify.sh           # Security Gate: Constant-Time HMAC
+├── ui/
+│   └── tui.sh              # Interface Gate: POSIX-Strict Telemetry
+└── governance/
+    ├── CONTRIBUTING.md     # The Law (POSIX/Zero-Trust)
+    ├── MANIFESTO.md        # The Vision (Sovereign Computation)
+    └── SECURITY.md         # The Shield (Vulnerability Reporting)
