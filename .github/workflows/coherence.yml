@@ -1,0 +1,11 @@
+name: Security & POSIX Audit
+on: [pull_request]
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
+        with:
+          fetch-depth: 0
+      - name: POSIX ShellCheck
+        run: find . -type f -name '*.sh' -exec shellcheck --shell=sh {} +
