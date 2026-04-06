@@ -9,6 +9,8 @@ eternum_require_cmd awk
 eternum_require_cmd openssl
 eternum_require_cmd xxd
 
+"${ROOT_DIR}/core/init.sh"
+
 "${ROOT_DIR}/security/entropy.sh"
 
 if [ -n "${ETERNUM_VERIFY_PAYLOAD:-}" ] && [ -n "${ETERNUM_VERIFY_HMAC:-}" ]; then
