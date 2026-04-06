@@ -1,8 +1,8 @@
-#!/bin/sh
+#!/usr/bin/env bash
 set -euo pipefail
-
-# Source the environment
-. "$(dirname "$0")/env.sh"
+export PATH=/usr/bin:/bin:/usr/sbin:/sbin
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+source "${ROOT_DIR}/core/env.sh"
 
 trap 'log_crit "Signal Interrupted."; exit 0' INT TERM
 
