@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # 🦊 Eternum Shared Environment [Build Phase: Alpha]
 # Logic: Provide shared constants and telemetry formatting.
 

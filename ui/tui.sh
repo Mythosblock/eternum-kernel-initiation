@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # 🦊 Eternum Telemetry UI [Build Phase: Alpha]
 # POSIX-strict TUI using ANSI escapes.
 

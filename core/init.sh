@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # 🦊 Eternum Kernel Init (Alpha)
 # Zero-trust bootstrap: entropy gate + HMAC verification gate.
 # Enhancement: auto-load .env.local if present (never committed).
