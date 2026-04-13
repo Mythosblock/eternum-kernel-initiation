@@ -1,8 +1,12 @@
-#!/usr/bin/env bash
-set -euo pipefail
+#!/bin/sh
+set -eu
+# Conditional pipefail: enable only if the shell supports it
+# shellcheck disable=SC3040
+if (set -o pipefail 2>/dev/null); then set -o pipefail; fi
 export PATH=/usr/bin:/bin:/usr/sbin:/sbin
-ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-source "${ROOT_DIR}/core/env.sh"
+ETERNUM_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+export ETERNUM_ROOT
+. "${ETERNUM_ROOT}/core/env.sh"
 
 entropy_bits() {
   if [ -r /dev/random ]; then
@@ -27,7 +31,6 @@ PY
 }
 
 main() {
-  local bits
   bits="$(entropy_bits)"
   eternum_log "entropy_bits=${bits} threshold=${ETERNUM_ENTROPY_MIN_BITS}"
 

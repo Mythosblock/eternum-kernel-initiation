@@ -1,8 +1,12 @@
-#!/usr/bin/env bash
-set -euo pipefail
+#!/bin/sh
+set -eu
+# Conditional pipefail: enable only if the shell supports it
+# shellcheck disable=SC3040
+if (set -o pipefail 2>/dev/null); then set -o pipefail; fi
 export PATH=/usr/bin:/bin:/usr/sbin:/sbin
-ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-cd "${ROOT_DIR}"
+ETERNUM_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+export ETERNUM_ROOT
+cd "${ETERNUM_ROOT}"
 
 printf '\n[1/6] git status\n'
 git status --short || true
@@ -22,8 +26,8 @@ else
 fi
 
 printf '\n[3/6] shell syntax check\n'
-find . -type f \( -name "*.sh" -o -name "init.sh" \) -print0 | while IFS= read -r -d '' file; do
-  bash -n "$file" && echo "OK  $file"
+find . -type f \( -name "*.sh" -o -name "init.sh" \) | while IFS= read -r file; do
+  sh -n "$file" && echo "OK  $file"
 done
 
 printf '\n[4/6] executable bits\n'

@@ -1,8 +1,12 @@
-#!/usr/bin/env bash
-set -euo pipefail
+#!/bin/sh
+set -eu
+# Conditional pipefail: enable only if the shell supports it
+# shellcheck disable=SC3040
+if (set -o pipefail 2>/dev/null); then set -o pipefail; fi
 export PATH=/usr/bin:/bin:/usr/sbin:/sbin
-ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-source "${ROOT_DIR}/core/env.sh"
+ETERNUM_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+export ETERNUM_ROOT
+. "${ETERNUM_ROOT}/core/env.sh"
 
 draw_line() {
   printf '%*s\n' "${1:-64}" '' | tr ' ' '='
@@ -27,6 +31,7 @@ render() {
 }
 
 main() {
+  trap 'printf "\033[0m\n"; printf "Initiation Interrupted\n" >&2; exit 0' INT TERM
   render
   if [ "${ETERNUM_TUI_ENABLED}" = "1" ]; then
     while :; do

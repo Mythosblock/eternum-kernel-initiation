@@ -1,8 +1,13 @@
 #!/bin/sh
-set -euo pipefail
+set -eu
+# Conditional pipefail: enable only if the shell supports it
+# shellcheck disable=SC3040
+if (set -o pipefail 2>/dev/null); then set -o pipefail; fi
 
 # Source the environment
-. "$(dirname "$0")/env.sh"
+ETERNUM_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+export ETERNUM_ROOT
+. "${ETERNUM_ROOT}/core/env.sh"
 
 trap 'log_crit "Signal Interrupted."; exit 0' INT TERM
 
