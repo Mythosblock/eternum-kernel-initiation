@@ -5,6 +5,7 @@
 set -eu
 
 # Source environment if available (never hard-fail on missing file)
+# shellcheck source=core/env.sh
 . "$(dirname "$0")/../core/env.sh" 2>/dev/null || true
 
 # Configurable minimum bits (default 256)
