@@ -1,7 +1,8 @@
-#!/bin/sh
+#!/bin/bash
 set -euo pipefail
 
 # Source the environment
+# shellcheck source=core/env.sh
 . "$(dirname "$0")/env.sh"
 
 trap 'log_crit "Signal Interrupted."; exit 0' INT TERM

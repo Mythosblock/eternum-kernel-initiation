@@ -1,15 +1,19 @@
-#!/usr/bin/env bash
+#!/bin/bash
 set -euo pipefail
 
 # Strict PATH lockdown to prevent TOCTOU hijacking
 export PATH=/usr/bin:/bin:/usr/sbin:/sbin
 
-export ETERNUM_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+ETERNUM_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+export ETERNUM_ROOT
 export ETERNUM_SIGNAL="neuromycelial-pulse"
 export ETERNUM_OPERATOR="${USER:-unknown}"
-export ETERNUM_HOSTNAME="$(hostname -s 2>/dev/null || echo unknown-host)"
-export ETERNUM_OS="$(uname -s)"
-export ETERNUM_BOOT_TS="$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
+ETERNUM_HOSTNAME="$(hostname -s 2>/dev/null || echo unknown-host)"
+export ETERNUM_HOSTNAME
+ETERNUM_OS="$(uname -s)"
+export ETERNUM_OS
+ETERNUM_BOOT_TS="$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
+export ETERNUM_BOOT_TS
 
 export ETERNUM_ENTROPY_MIN_BITS="${ETERNUM_ENTROPY_MIN_BITS:-512}"
 export ETERNUM_HMAC_ALGO="${ETERNUM_HMAC_ALGO:-sha256}"
