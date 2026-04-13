@@ -10,7 +10,7 @@ export PATH=/usr/bin:/bin:/usr/sbin:/sbin
 
 # ETERNUM_ROOT is set by each calling script before sourcing this file.
 # Validate it is present.
-[ -n "${ETERNUM_ROOT:-}" ] || { printf '[FATAL] ETERNUM_ROOT not set before sourcing env.sh\n' >&2; exit 1; }
+[ -n "${ETERNUM_ROOT:-}" ] || { printf '[FATAL] ETERNUM_ROOT not set by caller before sourcing env.sh. Ensure scripts export ETERNUM_ROOT before sourcing this file.\n' >&2; exit 1; }
 
 export ETERNUM_SIGNAL="neuromycelial-pulse"
 export ETERNUM_OPERATOR="${USER:-unknown}"

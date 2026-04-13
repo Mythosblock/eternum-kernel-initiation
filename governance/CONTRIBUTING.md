@@ -16,7 +16,7 @@ Generate a GPG key whose email matches your GitHub-verified email address:
 
 ```sh
 gpg --full-generate-key
-# Key type: RSA 4096 (or Ed25519)
+# Key type: RSA 4096 (or Ed25519 if GPG ≥ 2.1)
 # Email: must match your GitHub verified email exactly
 ```
 

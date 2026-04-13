@@ -10,16 +10,16 @@ export ETERNUM_ROOT
 
 timing_resistant_compare() (
   [ "${#1}" -eq "${#2}" ] || return 1
-  a="$1" b="$2" i=1 diff=0
-  while [ "$i" -le "${#a}" ]; do
-    ca=$(printf '%s' "$a" | cut -c"${i}")
-    cb=$(printf '%s' "$b" | cut -c"${i}")
-    oa=$(printf '%d' "'${ca}")
-    ob=$(printf '%d' "'${cb}")
-    diff=$(( diff | (oa ^ ob) ))
-    i=$(( i + 1 ))
-  done
-  [ "$diff" -eq 0 ]
+  # Single awk invocation avoids per-character subprocess overhead while
+  # still visiting every character position to resist timing side-channels.
+  printf '%s\n%s\n' "$1" "$2" | awk '
+    NR==1 { a=$0; next }
+    NR==2 {
+      n=length(a); diff=0
+      for(i=1;i<=n;i++) if(substr(a,i,1)!=substr($0,i,1)) diff=1
+      exit (diff ? 1 : 0)
+    }
+  '
 )
 
 hmac_hex() (
