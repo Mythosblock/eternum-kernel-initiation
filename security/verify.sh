@@ -17,19 +17,34 @@ timing_resistant_compare() {
 }
 
 hmac_hex() {
-  local key="$1" data="$2"
-  eternum_require_cmd openssl
-  printf '%s' "$data" | openssl dgst "-${ETERNUM_HMAC_ALGO}" -hmac "$key" -binary | xxd -p -c 256
+  local data="$1"
+  eternum_require_cmd python3
+  printf '%s' "$data" | python3 -c '
+import hmac
+import os
+import sys
+
+try:
+    sys.stdout.write(
+        hmac.new(
+            os.environ["ETERNUM_SHARED_SECRET"].encode(),
+            sys.stdin.buffer.read(),
+            os.environ["ETERNUM_HMAC_ALGO"],
+        ).hexdigest()
+    )
+except KeyError as exc:
+    raise SystemExit(f"missing environment variable: {exc.args[0]}")
+' || eternum_die "failed to compute HMAC"
 }
 
 main() {
-  local payload="${1:-}" provided="${2:-}" secret="${ETERNUM_SHARED_SECRET:-}"
+  local payload="${1:-}" provided="${2:-}"
   [ -n "$payload" ] || eternum_die "usage: security/verify.sh <payload> <expected_hmac_hex>"
   [ -n "$provided" ] || eternum_die "missing expected hmac"
-  [ -n "$secret" ] || eternum_die "ETERNUM_SHARED_SECRET is not set"
+  [ -n "${ETERNUM_SHARED_SECRET:-}" ] || eternum_die "ETERNUM_SHARED_SECRET is not set"
 
   local calculated
-  calculated="$(hmac_hex "$secret" "$payload")"
+  calculated="$(hmac_hex "$payload")"
 
   if timing_resistant_compare "$calculated" "$provided"; then
     eternum_log "verification gate passed"

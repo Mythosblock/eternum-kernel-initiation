@@ -8,4 +8,4 @@ jobs:
         with:
           fetch-depth: 0
       - name: POSIX ShellCheck
-        run: find . -type f -name '*.sh' -exec shellcheck -s bash --shell=sh {} +
+        run: find . -type f -name '*.sh' -exec shellcheck --shell=bash {} +

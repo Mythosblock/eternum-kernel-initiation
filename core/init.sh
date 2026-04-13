@@ -2,6 +2,7 @@
 set -euo pipefail
 
 # Source the environment
+# shellcheck disable=SC1091
 . "$(dirname "$0")/env.sh"
 
 trap 'log_crit "Signal Interrupted."; exit 0' INT TERM
