@@ -20,9 +20,15 @@ hmac_hex() {
   local key="$1" data="$2"
   eternum_require_cmd python3
   printf '%s' "$data" | _HMAC_KEY="$key" _HMAC_ALGO="${ETERNUM_HMAC_ALGO}" python3 -c "
-import sys, hmac, hashlib, os
+import hashlib
+import hmac
+import os
+import sys
 key = os.environ['_HMAC_KEY'].encode()
 algo = os.environ.get('_HMAC_ALGO', 'sha256')
+allowed = {'sha256', 'sha384', 'sha512', 'sha3_256', 'sha3_512'}
+if algo not in allowed:
+    sys.exit('unsupported HMAC algorithm: ' + algo)
 data = sys.stdin.buffer.read()
 sys.stdout.write(hmac.new(key, data, getattr(hashlib, algo)).hexdigest())
 "
