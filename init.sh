@@ -6,8 +6,7 @@ source "${ROOT_DIR}/core/env.sh"
 
 eternum_require_cmd bash
 eternum_require_cmd awk
-eternum_require_cmd openssl
-eternum_require_cmd xxd
+eternum_require_cmd python3
 
 "${ROOT_DIR}/security/entropy.sh"
 

@@ -18,8 +18,14 @@ timing_resistant_compare() {
 
 hmac_hex() {
   local key="$1" data="$2"
-  eternum_require_cmd openssl
-  printf '%s' "$data" | openssl dgst "-${ETERNUM_HMAC_ALGO}" -hmac "$key" -binary | xxd -p -c 256
+  eternum_require_cmd python3
+  printf '%s' "$data" | _HMAC_KEY="$key" _HMAC_ALGO="${ETERNUM_HMAC_ALGO}" python3 -c "
+import sys, hmac, hashlib, os
+key = os.environ['_HMAC_KEY'].encode()
+algo = os.environ.get('_HMAC_ALGO', 'sha256')
+data = sys.stdin.buffer.read()
+sys.stdout.write(hmac.new(key, data, getattr(hashlib, algo)).hexdigest())
+"
 }
 
 main() {
