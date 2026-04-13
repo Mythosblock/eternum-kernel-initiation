@@ -26,11 +26,14 @@ import os
 import sys
 
 try:
-    digest = getattr(hashlib, os.environ["ETERNUM_HMAC_ALGO"])
+    algorithm = os.environ["ETERNUM_HMAC_ALGO"]
 except KeyError:
     raise SystemExit("missing environment variable: ETERNUM_HMAC_ALGO")
+
+try:
+    digest = getattr(hashlib, algorithm)
 except AttributeError:
-    raise SystemExit(f"unsupported HMAC algorithm: {os.environ['ETERNUM_HMAC_ALGO']}")
+    raise SystemExit(f"unsupported HMAC algorithm: {algorithm}")
 
 try:
     sys.stdout.write(
