@@ -20,16 +20,24 @@ hmac_hex() {
   local data="$1"
   eternum_require_cmd python3
   printf '%s' "$data" | python3 -c '
+import hashlib
 import hmac
 import os
 import sys
+
+try:
+    digest = getattr(hashlib, os.environ["ETERNUM_HMAC_ALGO"])
+except (AttributeError, KeyError) as exc:
+    raise SystemExit(
+        "unsupported HMAC algorithm: {}".format(os.environ.get("ETERNUM_HMAC_ALGO", exc))
+    )
 
 try:
     sys.stdout.write(
         hmac.new(
             os.environ["ETERNUM_SHARED_SECRET"].encode(),
             sys.stdin.buffer.read(),
-            os.environ["ETERNUM_HMAC_ALGO"],
+            digest,
         ).hexdigest()
     )
 except KeyError as exc:
