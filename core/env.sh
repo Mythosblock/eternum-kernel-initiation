@@ -2,7 +2,7 @@
 # 🦊 Eternum Shared Environment [Build Phase: Alpha]
 # Logic: Provide shared constants and telemetry formatting.
 
-set -euo pipefail
+set -eu
 
 # --- POSIX Visual Constants ---
 RED='\033[0;31m'
@@ -12,8 +12,8 @@ NC='\033[0m' # No Color
 BOLD='\033[1m'
 
 # --- Operational Constants ---
-VERSION="1.0.0-alpha"
-SIGNAL_FREQ="999"
+export VERSION="1.0.0-alpha"
+export SIGNAL_FREQ="999"
 
 # --- Shared Telemetry Log ---
 log_info() { printf "${CYAN}[INFO]${NC} %s\n" "$1"; }

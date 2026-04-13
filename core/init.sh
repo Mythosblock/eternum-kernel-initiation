@@ -21,7 +21,7 @@ fi
 # Using set -a exports all vars from the file into the environment.
 if [ -f "${ROOT}/.env.local" ]; then
   set -a
-  # shellcheck disable=SC1090
+  # shellcheck disable=SC1090,SC1091
   . "${ROOT}/.env.local"
   set +a
 fi

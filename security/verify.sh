@@ -11,6 +11,7 @@
 set -eu
 
 # Safely source environment if available
+# shellcheck source=core/env.sh
 . "$(dirname "$0")/../core/env.sh" 2>/dev/null || true
 
 ok()   { printf "\033[0;32m[OK]\033[0m %s\n" "$*"; }
