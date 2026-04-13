@@ -27,10 +27,10 @@ import sys
 
 try:
     digest = getattr(hashlib, os.environ["ETERNUM_HMAC_ALGO"])
-except (AttributeError, KeyError) as exc:
-    raise SystemExit(
-        "unsupported HMAC algorithm: {}".format(os.environ.get("ETERNUM_HMAC_ALGO", exc))
-    )
+except KeyError:
+    raise SystemExit("missing environment variable: ETERNUM_HMAC_ALGO")
+except AttributeError:
+    raise SystemExit(f"unsupported HMAC algorithm: {os.environ['ETERNUM_HMAC_ALGO']}")
 
 try:
     sys.stdout.write(
